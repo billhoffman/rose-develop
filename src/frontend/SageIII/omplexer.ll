@@ -1,5 +1,4 @@
 %option prefix="omp_"
-%option outfile="lex.yy.c"
 %option stack
 %x EXPR
 

@@ -32,15 +32,34 @@ if(enable-fortran)
   #   ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran.cc)
   # FLEX_TARGET(PreprocFixed preproc-fortran-fixed.ll
   #   ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran-fixed.cc)
-  add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran.cc
-           ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran-fixed.cc
-    COMMAND ${FLEX_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/preproc-fortran.ll
-    COMMAND ${CMAKE_COMMAND} -E rename lex.yy.c preproc-fortran.cc
-    COMMAND ${FLEX_EXECUTABLE}
-      ${CMAKE_CURRENT_SOURCE_DIR}/preproc-fortran-fixed.ll
-    COMMAND ${CMAKE_COMMAND} -E rename lex.yy.c preproc-fortran-fixed.cc
-  )
+  set(FLEX_EXECUTABLE FALSE)
+  if(FLEX_EXECUTABLE)
+    add_custom_command(
+      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran.cc
+             ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran-fixed.cc
+      COMMAND ${FLEX_EXECUTABLE}
+        -o ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/preproc-fortran.ll
+      COMMAND ${FLEX_EXECUTABLE}
+        -o ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran-fixed.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/preproc-fortran-fixed.ll
+      )
+  else()
+    # if flex is not available use pre-generated files
+    # to update these files make sure flex is avaiable and do
+    # a build, then copy the generated files from the build tree
+    # to preproc-fortran.ll.pregen and preproc-fortran-fixed.ll.pregen
+    add_custom_command(
+      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran.cc
+             ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran-fixed.cc
+      COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_CURRENT_SOURCE_DIR}/preproc-fortran.ll.pregen
+        ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran.cc
+      COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_CURRENT_SOURCE_DIR}/preproc-fortran-fixed.ll.pregen
+        ${CMAKE_CURRENT_BINARY_DIR}/preproc-fortran-fixed.cc
+      )
+  endif()
 
 set(libroseFortran_SOURCES
     fortran_support.C fortran_error_handler.C openFortranParser_main.C
