@@ -914,14 +914,14 @@ endif (NOT WIN32)
 message(Status "Looking for flex ...")
 find_package(FLEX)
 if(NOT FLEX_FOUND)
-  message(FATAL_ERROR "Could not find flex command")
+  message( "Could not find flex command")
 endif(NOT FLEX_FOUND)
 
 message(Status "Looking for BISON ...")
 include(FindBison)
 FIND_BISON()
 if(NOT BISON_FOUND)
-  message(FATAL_ERROR "Could not find BISON command")
+  message( "Could not find BISON command")
 endif(NOT BISON_FOUND)
 
 # include(ConvenienceLibs) # Not in use

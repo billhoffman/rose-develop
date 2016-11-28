@@ -75,6 +75,7 @@ if(BISON_EXECUTABLE)
 else()
   add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.C
+    ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.H
     COMMAND ${CMAKE_COMMAND} -E copy
     ${ROSE_TOP_SRC_DIR}/src/frontend/SageIII/ompparser.C.pregen
     ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.C
@@ -89,7 +90,7 @@ endif()
 #BISON generates a ompparser.H file and we need a ompparser.h file
 add_custom_command(
    OUTPUT ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.h
-   COMMAND 
+   COMMAND
    ${CMAKE_COMMAND}  -E copy
    ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.H ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.h
    DEPENDS ${CMAKE_BINARY_DIR}/src/frontend/SageIII/ompparser.C
